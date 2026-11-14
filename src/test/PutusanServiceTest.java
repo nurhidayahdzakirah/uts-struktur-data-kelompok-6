@@ -1,7 +1,6 @@
 package main.java;
 
 import org.junit.jupiter.api.Test;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
@@ -9,13 +8,11 @@ import java.io.PrintStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PutusanServiceTest {
-
     private final String fileCSV = "data/putusan-50.csv";
 
     @Test
     void testImportData() {
         PutusanService service = new PutusanService();
-
         String output = tangkapOutput(() -> service.importData(fileCSV));
 
         assertTrue(output.contains("Import selesai"));
@@ -26,86 +23,53 @@ public class PutusanServiceTest {
     @Test
     void testCariData() {
         PutusanService service = new PutusanService();
-
         service.importData(fileCSV);
 
         String output = tangkapOutput(() -> service.cari("P001"));
-
-        assertTrue(
-                output.contains("Data ditemukan:")
-                        || output.contains("Data tidak ditemukan.")
-        );
+        assertTrue(output.contains("Data ditemukan:") || output.contains("Data tidak ditemukan."));
         assertTrue(output.contains("Jumlah langkah:"));
     }
 
     @Test
     void testFilterJenis() {
         PutusanService service = new PutusanService();
-
         service.importData(fileCSV);
 
         String output = tangkapOutput(() -> service.filterJenis("shabu"));
-
-        assertTrue(
-                output.contains("=== HASIL ===")
-                        || output.contains("Tidak ada data")
-        );
+        assertTrue(output.contains("=== HASIL ===") || output.contains("Tidak ada data"));
     }
 
     @Test
     void testFilterBerat() {
         PutusanService service = new PutusanService();
-
         service.importData(fileCSV);
 
-        String output = tangkapOutput(
-                () -> service.filterBerat(0, 1000)
-        );
-
-        assertTrue(
-                output.contains("=== HASIL ===")
-                        || output.contains("Tidak ada data")
-        );
+        String output = tangkapOutput(() -> service.filterBerat(0, 1000));
+        assertTrue(output.contains("=== HASIL ===") || output.contains("Tidak ada data"));
     }
 
     @Test
     void testFilterPasal() {
         PutusanService service = new PutusanService();
-
         service.importData(fileCSV);
 
-        String output = tangkapOutput(
-                () -> service.filterPasal("112")
-        );
-
-        assertTrue(
-                output.contains("=== HASIL ===")
-                        || output.contains("Tidak ada data")
-        );
+        String output = tangkapOutput(() -> service.filterPasal("112"));
+        assertTrue(output.contains("=== HASIL ===") || output.contains("Tidak ada data"));
     }
 
     @Test
     void testFilterVonis() {
         PutusanService service = new PutusanService();
-
         service.importData(fileCSV);
 
-        String output = tangkapOutput(
-                () -> service.filterVonis(1, 200)
-        );
-
-        assertTrue(
-                output.contains("=== HASIL ===")
-                        || output.contains("Tidak ada data")
-        );
+        String output = tangkapOutput(() -> service.filterVonis(1, 200));
+        assertTrue(output.contains("=== HASIL ===") || output.contains("Tidak ada data"));
     }
 
     @Test
     void testUrutkan() {
         PutusanService service = new PutusanService();
-
         service.importData(fileCSV);
-
         String output = tangkapOutput(service::urutkan);
 
         assertTrue(output.contains("Data berhasil diurutkan"));
@@ -116,35 +80,24 @@ public class PutusanServiceTest {
     @Test
     void testCekData() {
         PutusanService service = new PutusanService();
-
         service.importData(fileCSV);
 
         String output = tangkapOutput(service::cekData);
-
-        assertTrue(
-                output.contains("Data aman")
-                        || output.contains("Data bermasalah")
-        );
+        assertTrue(output.contains("Data aman") || output.contains("Data bermasalah"));
     }
 
     @Test
     void testAgregasi() {
         PutusanService service = new PutusanService();
-
         service.importData(fileCSV);
 
         String output = tangkapOutput(service::agregasi);
-
-        assertTrue(
-                output.contains("=== AGREGASI ===")
-                        || output.contains("Data masih kosong")
-        );
+        assertTrue(output.contains("=== AGREGASI ===") || output.contains("Data masih kosong"));
     }
 
     @Test
     void testEksporData() {
         PutusanService service = new PutusanService();
-
         service.importData(fileCSV);
 
         File file = new File("data/test-ekspor.csv");
@@ -168,8 +121,6 @@ public class PutusanServiceTest {
         PutusanService service = new PutusanService();
 
         service.importData(fileCSV);
-
-        // Cari terlebih dahulu agar hasilCari terisi
         service.cari("P001");
 
         File file = new File("data/test-ekspor-cari.csv");
@@ -178,14 +129,9 @@ public class PutusanServiceTest {
             file.delete();
         }
 
-        String output = tangkapOutput(
-                () -> service.eksporCari(file.getPath())
-        );
+        String output = tangkapOutput(() -> service.eksporCari(file.getPath()));
 
-        assertTrue(
-                output.contains("Hasil pencarian berhasil diekspor")
-                        || output.contains("Belum ada hasil pencarian")
-        );
+        assertTrue(output.contains("Hasil pencarian berhasil diekspor") || output.contains("Belum ada hasil pencarian"));
 
         if (file.exists()) {
             file.delete();
@@ -194,13 +140,8 @@ public class PutusanServiceTest {
 
     private String tangkapOutput(Runnable aksi) {
         PrintStream outputLama = System.out;
-
-        ByteArrayOutputStream buffer =
-                new ByteArrayOutputStream();
-
-        PrintStream outputBaru =
-                new PrintStream(buffer);
-
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        PrintStream outputBaru = new PrintStream(buffer);
         System.setOut(outputBaru);
 
         try {

@@ -1,5 +1,3 @@
-package main.java;
-
 import main.java.Stack;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package main.java;
+package main;
 
 public class Stack<T> {
 
@@ -59,14 +59,8 @@ public class Stack<T> {
     }
 
     public void restore(Stack<T> sementara) {
-        Stack<T> bantu = new Stack<>();
-
         while (!sementara.isEmpty()) {
-            bantu.push(sementara.pop());
-        }
-
-        while (!bantu.isEmpty()) {
-            push(bantu.pop());
+            push(sementara.pop());
         }
     }
 
